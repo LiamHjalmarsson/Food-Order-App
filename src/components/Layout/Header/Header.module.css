@@ -1,0 +1,21 @@
+.header {
+    width: 100%;
+    height: 5rem;
+    background-color: var(--colordBackground) ;
+    color: var(--fontColor);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10%;
+}
+
+.header-image {
+    width: 100%;
+    height: 25rem;
+}
+
+.header-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
