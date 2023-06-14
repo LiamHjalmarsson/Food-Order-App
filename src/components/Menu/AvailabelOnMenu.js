@@ -1,31 +1,57 @@
+import { useState, useEffect } from "react";
+
+import useHttp from "../../hooks/use-http";
+
 import styles from "./AvailabelOnMenu.module.css";
 import Card from "../UI/Card/Card";
 import MenuItem from "./MenuItem/MenuItem";
 
-const arrayOfMenu = [
-    {
-        id: 1,
-        title: "Pizza",
-        description: "The one and only pizza",
-        price: 39
-    },
-    {
-        id: 2,
-        title: "Fish",
-        description: "Right from the ocean and to your home",
-        price: 60
-    },
-    {
-        id: 3,
-        title: "Sushi",
-        description: "The best sushi fresh from the ocean and made on the boat",
-        price: 80
-    }
-];
-
 const AvailabelOnMenu = () => {
+    const [meals, setMeals] = useState([]);
 
-    const menuList = arrayOfMenu.map((meal) =>  
+    const httpRecourse = useHttp();
+
+    const { isLoading, error, sendRequest: fetchMeals } = httpRecourse;
+
+    useEffect(() => {
+        const transformTasks = (mealObject) => {
+            const loadedMeals = [];
+        
+            for ( const key in mealObject ) {
+                loadedMeals.push(
+                    {
+                        id: key,
+                        key: key,
+                        title: mealObject[key].title,
+                        description: mealObject[key].description,
+                        price: mealObject[key].price,
+                    }
+                );
+            }
+        
+            setMeals(loadedMeals);
+        };
+    
+        fetchMeals(
+            { url: 'https://dummyproject-8a8c0-default-rtdb.europe-west1.firebasedatabase.app/meals.json' },
+            transformTasks
+        );
+
+    }, [fetchMeals]);
+
+    if (isLoading) {
+        return <section className={styles.MealsLoading}>
+            <p> Menu loading... </p>
+        </section>
+    }
+
+    if (error) {
+        return <section className={styles.MealsError}>
+            <p> {error} </p>
+        </section>
+    }
+
+    const menuList = meals.map((meal) =>  
         <MenuItem 
             id={meal.id}
             key={meal.id} 
