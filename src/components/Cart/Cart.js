@@ -10,7 +10,6 @@ import CheckOut from "./CheckOut";
 const Cart = (props) => {
     const [isCheckOut, setIsCheckOut] = useState(false);
     const cartContext = useContext(CartContext);
-    // const [isSubmitting, setIsSubmitting] = useState(false);
     const [didSubmit, setDidSubmit] = useState(false);
 
     const httpRecourse = useHttp();
